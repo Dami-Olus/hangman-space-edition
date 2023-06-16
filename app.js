@@ -65,6 +65,10 @@ function init() {
   })
 }
 
+document.addEventListener('keydown', (e)=> {
+  
+} )
+
 
 
 init();
