@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>HangMan Space Edition</h1>
+      </header>
+      <!-- Game Screen -->
+      <section class="game-screen">
+        <div class="game-play" >
+          <!-- left section - animation -->
+          <section class="animation" style="position: relative">
+            <img src="assets/ufo.jpeg" alt="ship-img" >
+            <img src="assets/person.png" alt="person-img" style="height: 10rem; position:absolute; bottom:0; left: 15rem;">
+          </section>
+          <!-- right section - scores, info and stats -->
+          <section class="score-info">
+            <p class="players">Single Player</p>
+            <p class="time-limit">Remaining time: 00:30</p>
+            <p class="word-count">2/5 words</p>
+            <div class="hint">
+              <p>Remaining hints: 3</p>
+              <img src="assets/space-gun.png" alt="hint" style="height: 10rem;">
+              <button>Hint</button>
+            </div>
+          </section>
+        </div>
+        <!-- secret letter/word -->
+        <section class="secret-word">
+
+          <div class="secret-letter" style="line-height: 0px;">
+            <p style="font-size: 65px;">d</p>
+            <div style="font-size: 65px; margin-top: -35px;">-</div>
+          </div>
+
+          <div class="secret-letter" style="line-height: 0px;">
+            <p style="font-size: 65px;">o</p>
+            <div style="font-size: 65px; margin-top: -35px;">-</div>
+          </div>
+
+          <div class="secret-letter" style="line-height: 0px;">
+            <p style="font-size: 65px;">g</p>
+            <div style="font-size: 65px; margin-top: -35px;">-</div>
+          </div>
+          
+        </section>
+      </section>
+      <!-- Game keyboard -->
+      <section class="keyboard"></section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+header {
+  text-align: center;
+}
+.game-play {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hint {
+  display: flex;
+  flex-direction: column;
+}
+
+.secret-word {
+  display: flex;
+  
+}
+
+.secret-letter {
+  margin-right: 15px;
+}
+
