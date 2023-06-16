@@ -13,10 +13,22 @@ header {
 
 .secret-word {
   display: flex;
-  
+  margin-top: 20px;
 }
 
 .secret-letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+  background-color: aqua;
   margin-right: 15px;
+  font-size: 65px;
+  /* line-height: 5px; */
 }
+
+/* .letter-marker {
+  display: block !important;
+} */
 
