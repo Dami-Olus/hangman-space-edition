@@ -28,6 +28,7 @@ let foundLetters = [];
 // Cached elements
 // Text input
 const word = document.querySelector(".secret-word");
+const gameBtn = document.querySelector(".game-button");
 
 // Get a hint button
 // Remaining hints
@@ -63,6 +64,9 @@ function render() {
 }
 
 function renderGame() {
+  while (word.hasChildNodes()) {
+    word.removeChild(word.firstChild);
+  }
   letters.forEach((x, index) => {
     const letterContainer = document.createElement("div");
     const letterContainerp = document.createElement("p");
@@ -113,3 +117,5 @@ document.addEventListener("keydown", (e) => {
     document.querySelector(".message").innerText = "Wrong try again";
   }
 });
+
+gameBtn.addEventListener('click', init)
