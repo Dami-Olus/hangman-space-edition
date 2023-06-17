@@ -28,11 +28,14 @@ let secretWord;
 let letters;
 let playerGuess;
 let foundLetters;
+let numberOfWrongGuesses
+let remainingNumberofWrongGuesses
 
 // Cached elements
 // Text input
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
+const guesses = document.querySelector('.guesses')
 
 // Get a hint button
 // Remaining hints
@@ -57,11 +60,11 @@ init();
 
 function init() {
   secretWord = wordChoices[randomPicker()];
-  console.log(secretWord);
   letters = secretWord.split("");
-  console.log(letters);
   foundLetters = []
-  document.querySelector(".message2").innerText = "Play Again";
+  numberOfWrongGuesses = 3;
+  remainingNumberofWrongGuesses = numberOfWrongGuesses
+  document.querySelector(".message2").innerText = "Please Save Me!";
 
   render();
 }
@@ -74,6 +77,7 @@ function renderGame() {
   while (word.hasChildNodes()) {
     word.removeChild(word.firstChild);
   }
+  guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`
   letters.forEach((x, index) => {
     const letterContainer = document.createElement("div");
     const letterContainerp = document.createElement("p");
@@ -87,21 +91,33 @@ function renderGame() {
   });
 }
 
-function renderMessage() {
+function renderMessage(x) {
   const secretletter = document.querySelectorAll(".secret-letter");
   let status = [];
   secretletter.forEach((letter) => {
     status.push(letter.style.display);
   });
+console.log(x)
+  if(x===0){
+    document.querySelector(".message2").innerText = "Game Over";
+    gameBtn.innerText = "Play Again"
+    return
+  }
+  
   if (!status.includes("none") === true) {
     document.querySelector(".message2").innerText = "Thank you for saving me";
     gameBtn.innerText = "Play Again"
   }
+
+  
 }
+
+
 
 //listen for players keypress, If it is included use the index to display it on the page.
 document.addEventListener("keydown", (e) => {
   playerGuess = e.key;
+  console.log(playerGuess)
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
@@ -118,12 +134,15 @@ document.addEventListener("keydown", (e) => {
           document.getElementById(idx).style.display = "";
         }
       });
-      renderMessage();
+      
     }
   } else {
     console.log("wrong");
+    if(remainingNumberofWrongGuesses>0){remainingNumberofWrongGuesses--}
+    guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`
     document.querySelector(".message").innerText = "Wrong try again";
   }
+  renderMessage(remainingNumberofWrongGuesses);
 });
 
 gameBtn.addEventListener('click', init)
