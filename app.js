@@ -11,6 +11,10 @@ const wordChoices = [
   "monkey",
   "eagle",
   "sheep",
+  "crocodile",
+  "elephant",
+  'giraffe',
+  'rat'
 ];
 
 // State Variables
@@ -23,7 +27,7 @@ const wordChoices = [
 let secretWord;
 let letters;
 let playerGuess;
-let foundLetters = [];
+let foundLetters;
 
 // Cached elements
 // Text input
@@ -56,6 +60,9 @@ function init() {
   console.log(secretWord);
   letters = secretWord.split("");
   console.log(letters);
+  foundLetters = []
+  document.querySelector(".message2").innerText = "Play Again";
+
   render();
 }
 
@@ -88,6 +95,7 @@ function renderMessage() {
   });
   if (!status.includes("none") === true) {
     document.querySelector(".message2").innerText = "Thank you for saving me";
+    gameBtn.innerText = "Play Again"
   }
 }
 
