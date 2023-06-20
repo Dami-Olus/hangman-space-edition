@@ -13,8 +13,8 @@ const wordChoices = [
   "sheep",
   "crocodile",
   "elephant",
-  'giraffe',
-  'rat'
+  "giraffe",
+  "rat",
 ];
 
 // State Variables
@@ -28,14 +28,15 @@ let secretWord;
 let letters;
 let playerGuess;
 let foundLetters;
-let numberOfWrongGuesses
-let remainingNumberofWrongGuesses
+let numberOfWrongGuesses;
+let remainingNumberofWrongGuesses;
 
 // Cached elements
 // Text input
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
-const guesses = document.querySelector('.guesses')
+const guesses = document.querySelector(".guesses");
+const hiddenLetter = document.querySelectorAll(".secret-letter");
 
 // Get a hint button
 // Remaining hints
@@ -61,9 +62,9 @@ init();
 function init() {
   secretWord = wordChoices[randomPicker()];
   letters = secretWord.split("");
-  foundLetters = []
+  foundLetters = [];
   numberOfWrongGuesses = 3;
-  remainingNumberofWrongGuesses = numberOfWrongGuesses
+  remainingNumberofWrongGuesses = numberOfWrongGuesses;
   document.querySelector(".message2").innerText = "Please Save Me!";
 
   render();
@@ -77,7 +78,7 @@ function renderGame() {
   while (word.hasChildNodes()) {
     word.removeChild(word.firstChild);
   }
-  guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`
+  guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
   letters.forEach((x, index) => {
     const letterContainer = document.createElement("div");
     const letterContainerp = document.createElement("p");
@@ -97,27 +98,27 @@ function renderMessage(x) {
   secretletter.forEach((letter) => {
     status.push(letter.style.display);
   });
-console.log(x)
-  if(x===0){
+  console.log(x);
+  if (x === 0) {
+    secretletter.forEach((letter) => {
+      letter.style.display = "";
+    });
+
     document.querySelector(".message2").innerText = "Game Over";
-    gameBtn.innerText = "Play Again"
-    return
+    gameBtn.innerText = "Play Again";
+    return;
   }
-  
+
   if (!status.includes("none") === true) {
     document.querySelector(".message2").innerText = "Thank you for saving me";
-    gameBtn.innerText = "Play Again"
+    gameBtn.innerText = "Play Again";
   }
-
-  
 }
-
-
 
 //listen for players keypress, If it is included use the index to display it on the page.
 document.addEventListener("keydown", (e) => {
   playerGuess = e.key;
-  console.log(playerGuess)
+  console.log(playerGuess);
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
@@ -134,15 +135,16 @@ document.addEventListener("keydown", (e) => {
           document.getElementById(idx).style.display = "";
         }
       });
-      
     }
   } else {
     console.log("wrong");
-    if(remainingNumberofWrongGuesses>0){remainingNumberofWrongGuesses--}
-    guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`
+    if (remainingNumberofWrongGuesses > 0) {
+      remainingNumberofWrongGuesses--;
+    }
+    guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
     document.querySelector(".message").innerText = "Wrong try again";
   }
   renderMessage(remainingNumberofWrongGuesses);
 });
 
-gameBtn.addEventListener('click', init)
+gameBtn.addEventListener("click", init);
