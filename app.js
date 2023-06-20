@@ -30,6 +30,7 @@ let playerGuess;
 let foundLetters;
 let numberOfWrongGuesses;
 let remainingNumberofWrongGuesses;
+let numberOfHints;
 
 // Cached elements
 // Text input
@@ -37,6 +38,8 @@ const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
 const guesses = document.querySelector(".guesses");
 const hiddenLetter = document.querySelectorAll(".secret-letter");
+const hints = document.querySelector(".hintCounter");
+const hintBtn = document.querySelector(".hintBtn");
 
 // Get a hint button
 // Remaining hints
@@ -65,7 +68,7 @@ function init() {
   foundLetters = [];
   numberOfWrongGuesses = 3;
   remainingNumberofWrongGuesses = numberOfWrongGuesses;
-  document.querySelector(".message2").innerText = "Please Save Me!";
+  numberOfHints = 5;
 
   render();
 }
@@ -79,6 +82,8 @@ function renderGame() {
     word.removeChild(word.firstChild);
   }
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
+  hints.innerText = `Remaining number of hints: ${numberOfHints}`;
+  document.querySelector(".message2").innerText = "Please Save Me!";
   letters.forEach((x, index) => {
     const letterContainer = document.createElement("div");
     const letterContainerp = document.createElement("p");
@@ -147,4 +152,23 @@ document.addEventListener("keydown", (e) => {
   renderMessage(remainingNumberofWrongGuesses);
 });
 
+//Reset the game
 gameBtn.addEventListener("click", init);
+
+//Get a hint
+hintBtn.addEventListener("click", () => {
+  if (numberOfHints > 0) {
+    numberOfHints--;
+  }
+
+  hints.innerText = `Remaining number of hints: ${numberOfHints}`;
+
+  let randomLetter = Math.floor(Math.random() * letters.length);
+  console.log(randomLetter);
+
+  letters.map((item, idx) => {
+   
+      document.getElementById(randomLetter).style.display = "";
+    
+  })
+});
