@@ -15,6 +15,14 @@ const wordChoices = [
   "elephant",
   "giraffe",
   "rat",
+  "duck",
+  "lion",
+  "tiger",
+  "leopard",
+  "fish",
+  "dolphin",
+  "shark",
+  "whale",
 ];
 
 // State Variables
@@ -31,6 +39,10 @@ let foundLetters;
 let numberOfWrongGuesses;
 let remainingNumberofWrongGuesses;
 let numberOfHints;
+let second;
+let minute;
+let numberOfWins;
+let numberOfTries;
 
 // Cached elements
 // Text input
@@ -40,6 +52,10 @@ const guesses = document.querySelector(".guesses");
 const hiddenLetter = document.querySelectorAll(".secret-letter");
 const hints = document.querySelector(".hintCounter");
 const hintBtn = document.querySelector(".hintBtn");
+const timeLimit = document.querySelector(".time-limit");
+const minutes = document.querySelector(".minutes");
+const seconds = document.querySelector(".seconds");
+const wordCount = document.querySelector(".word-count");
 
 // Get a hint button
 // Remaining hints
@@ -66,15 +82,48 @@ function init() {
   secretWord = wordChoices[randomPicker()];
   letters = secretWord.split("");
   foundLetters = [];
-  numberOfWrongGuesses = 3;
+  numberOfWrongGuesses = 8;
   remainingNumberofWrongGuesses = numberOfWrongGuesses;
-  numberOfHints = 5;
+  numberOfHints = 20;
+  second = 0;
+  minute = 2;
+  numberOfWins = 0;
+  numberOfTries = 1;
 
   render();
 }
 
+function renderTime() {
+  if (second > 0 || minute > 0) {
+    setInterval(timer, 1000);
+    setInterval(minuteTimer, 60000);
+  }
+}
+
+function timer() {
+  while (minute > 0) {
+    if (second > 0) {
+      second--;
+      seconds.innerHTML = second;
+    } else {
+      second = 60;
+      seconds.innerHTML = second;
+    }
+  }
+}
+
+function minuteTimer() {
+  if (minute > 0) {
+    minute--;
+    minutes.innerHTML = minute;
+  }
+}
+
+// setInterval(sec, 1000)
+
 function render() {
   renderGame();
+  // renderTime()
 }
 
 function renderGame() {
@@ -82,8 +131,15 @@ function renderGame() {
     word.removeChild(word.firstChild);
   }
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
+
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
   document.querySelector(".message2").innerText = "Please Save Me!";
+
+  numberOfTries > 1
+    ? (wordCount.innerText = `${numberOfWins}/${numberOfTries} words`)
+    : (wordCount.innerText = `${numberOfWins}/${numberOfTries} word`);
+
+  //render hidden word
   letters.forEach((x, index) => {
     const letterContainer = document.createElement("div");
     const letterContainerp = document.createElement("p");
@@ -111,12 +167,31 @@ function renderMessage(x) {
 
     document.querySelector(".message2").innerText = "Game Over";
     gameBtn.innerText = "Play Again";
+    numberOfTries++;
+    wordCount.innerText = `${numberOfWins}/${numberOfTries} words`;
+
+    secretWord = wordChoices[randomPicker()];
+    letters = secretWord.split("");
+    remainingNumberofWrongGuesses = numberOfWrongGuesses;
+    foundLetters = [];
+    setTimeout(render, 2000);
     return;
   }
-
+  console.log(status);
+  console.log(foundLetters);
   if (!status.includes("none") === true) {
     document.querySelector(".message2").innerText = "Thank you for saving me";
     gameBtn.innerText = "Play Again";
+    numberOfWins++;
+    numberOfTries++;
+    wordCount.innerText = `${numberOfWins}/${numberOfTries} words`;
+
+    secretWord = wordChoices[randomPicker()];
+    letters = secretWord.split("");
+    remainingNumberofWrongGuesses = numberOfWrongGuesses;
+    foundLetters = [];
+    setTimeout(render, 2000);
+    return;
   }
 }
 
@@ -157,18 +232,14 @@ gameBtn.addEventListener("click", init);
 
 //Get a hint
 hintBtn.addEventListener("click", () => {
+  let randomLetter = Math.floor(Math.random() * letters.length);
+  console.log(randomLetter);
   if (numberOfHints > 0) {
+    letters.map((item, idx) => {
+      document.getElementById(randomLetter).style.display = "";
+    });
     numberOfHints--;
   }
 
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
-
-  let randomLetter = Math.floor(Math.random() * letters.length);
-  console.log(randomLetter);
-
-  letters.map((item, idx) => {
-   
-      document.getElementById(randomLetter).style.display = "";
-    
-  })
 });
