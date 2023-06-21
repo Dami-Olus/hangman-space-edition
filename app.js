@@ -3,6 +3,7 @@
 // Time limit options= []
 // Number of players = []
 // WordChoices
+const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 const wordChoices = [
   "bird",
   "cat",
@@ -44,6 +45,7 @@ let minute;
 let numberOfWins;
 let numberOfTries;
 
+
 // Cached elements
 // Text input
 const word = document.querySelector(".secret-word");
@@ -56,6 +58,7 @@ const timeLimit = document.querySelector(".time-limit");
 const minutes = document.querySelector(".minutes");
 const seconds = document.querySelector(".seconds");
 const wordCount = document.querySelector(".word-count");
+const keyboard = document.querySelector(".keyboard");
 let correctLetter = new Audio("assets/audio/correct-choice-43861.mp3");
 let gameOver = new Audio("assets/audio/game-over-arcade-6435.mp3");
 let wrongLetter = new Audio("assets/audio/wrong-buzzer-6268.mp3");
@@ -93,27 +96,27 @@ function init() {
   render();
 }
 
-let secondsInterval = null
-let minutesInterval = null
+let secondsInterval = null;
+let minutesInterval = null;
 
 function renderTime() {
-  if(secondsInterval) clearInterval(secondsInterval);
-  if(minutesInterval) clearInterval(minutesInterval);
+  if (secondsInterval) clearInterval(secondsInterval);
+  if (minutesInterval) clearInterval(minutesInterval);
   secondsInterval = setInterval(secondTimer, 1000);
   minutesInterval = setInterval(minuteTimer, 60000);
 }
 
-renderTime()
-
-
+renderTime();
 
 function secondTimer() {
-  if (second > 0) {
-    second--;
-    seconds.innerText = second;
-  } else {
-    second = 59;
-    seconds.innerText = second;
+  if (minute > 0) {
+    if (second > 0) {
+      second--;
+      seconds.innerText = second;
+    } else {
+      second = 59;
+      seconds.innerText = second;
+    }
   }
   seconds.innerText = `${second > 9 ? second : "0" + second}`;
 }
@@ -126,21 +129,32 @@ function minuteTimer() {
   minutes.innerText = `${minute}`;
 }
 
-
-
-
-
-
 function render() {
   renderGame();
   // renderTime();
-  
 }
 
 function renderGame() {
   while (word.hasChildNodes()) {
     word.removeChild(word.firstChild);
   }
+
+  while (keyboard.hasChildNodes()) {
+    keyboard.removeChild(keyboard.firstChild);
+  }
+
+  alphabets.forEach((alphabet) => {
+    keyboardKey = document.createElement('div')
+    keyboardKey.style.cursor = 'pointer';
+    keyboardKey.style.border = '1px solid black';
+    keyboardKey.style.height = '25px'
+    keyboardKey.style.width = '25px'
+    keyboardKey.style.textAlign = 'center'
+    keyboardKey.innerText = alphabet
+    keyboard.append(keyboardKey)
+  })
+
+
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
 
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
@@ -174,7 +188,7 @@ function renderMessage(x) {
     status.push(letter.style.display);
   });
   console.log(x);
-  if (x === 0) {
+  if (x === 0 || (minute === 0 && second === 0)) {
     secretletter.forEach((letter) => {
       letter.style.display = "";
     });
@@ -246,6 +260,42 @@ document.addEventListener("keydown", (e) => {
   }
   renderMessage(remainingNumberofWrongGuesses);
 });
+
+keyboard.addEventListener("click", (e) => {
+  playerGuess = e.target.innerText;
+
+  console.log(playerGuess);
+  // check if the letter is included in the letters list.
+  if (letters.includes(playerGuess)) {
+    console.log("correct");
+    correctLetter.play();
+
+    // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
+    if (!foundLetters.includes(playerGuess)) {
+      document.querySelector(".message").innerText =
+        "Correct, make another guess";
+      foundLetters.push(playerGuess);
+      console.log(foundLetters);
+
+      letters.map((item, idx) => {
+        if (playerGuess === item) {
+          document.getElementById(idx).style.display = "";
+        }
+      });
+    }
+  } else {
+    console.log("wrong");
+    wrongLetter.play();
+    if (remainingNumberofWrongGuesses > 0) {
+      remainingNumberofWrongGuesses--;
+    }
+    guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
+    document.querySelector(".message").innerText = "Wrong try again";
+  }
+  renderMessage(remainingNumberofWrongGuesses);
+});
+
+
 
 //Reset the game
 gameBtn.addEventListener("click", init);

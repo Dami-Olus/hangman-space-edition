@@ -32,3 +32,9 @@ header {
   display: block !important;
 } */
 
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  background-color: beige;
+}
+
