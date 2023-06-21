@@ -103,7 +103,7 @@ function renderTime() {
   if (secondsInterval) clearInterval(secondsInterval);
   if (minutesInterval) clearInterval(minutesInterval);
   secondsInterval = setInterval(secondTimer, 1000);
-  minutesInterval = setInterval(minuteTimer, 60000);
+  // minutesInterval = setInterval(minuteTimer, 60000);
 }
 
 renderTime();
@@ -114,20 +114,22 @@ function secondTimer() {
       second--;
       seconds.innerText = second;
     } else {
+      minute--
+      minutes.innerText = `${minute}`;
       second = 59;
-      seconds.innerText = second;
+      
     }
   }
   seconds.innerText = `${second > 9 ? second : "0" + second}`;
 }
 
-function minuteTimer() {
-  if (minute > 0) {
-    minute--;
-    minutes.innerText = minute;
-  }
-  minutes.innerText = `${minute}`;
-}
+// function minuteTimer() {
+//   if (minute > 0) {
+//     minute--;
+//     minutes.innerText = minute;
+//   }
+//   minutes.innerText = `${minute}`;
+// }
 
 function render() {
   renderGame();
