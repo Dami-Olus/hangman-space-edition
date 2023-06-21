@@ -56,10 +56,10 @@ const timeLimit = document.querySelector(".time-limit");
 const minutes = document.querySelector(".minutes");
 const seconds = document.querySelector(".seconds");
 const wordCount = document.querySelector(".word-count");
-let correctLetter = new Audio('assets/audio/correct-choice-43861.mp3')
-let gameOver = new Audio('assets/audio/game-over-arcade-6435.mp3')
-let wrongLetter = new Audio('assets/audio/wrong-buzzer-6268.mp3')
-let success = new Audio('assets/audio/success-1-6297.mp3')
+let correctLetter = new Audio("assets/audio/correct-choice-43861.mp3");
+let gameOver = new Audio("assets/audio/game-over-arcade-6435.mp3");
+let wrongLetter = new Audio("assets/audio/wrong-buzzer-6268.mp3");
+let success = new Audio("assets/audio/success-1-6297.mp3");
 
 // Get a hint button
 // Remaining hints
@@ -93,23 +93,29 @@ function init() {
   render();
 }
 
+let secondsInterval = null
+let minutesInterval = null
+
 function renderTime() {
-    setInterval(secondTimer, 1000);
-    setInterval(minuteTimer, 60000);
-  
+  if(secondsInterval) clearInterval(secondsInterval);
+  if(minutesInterval) clearInterval(minutesInterval);
+  secondsInterval = setInterval(secondTimer, 1000);
+  minutesInterval = setInterval(minuteTimer, 60000);
 }
 
+renderTime()
+
+
+
 function secondTimer() {
-  
-    if (second > 0) {
-      second--;
-      seconds.innerText = second;
-    } else {
-      second = 59;
-      seconds.innerText = second;
-    }
-    seconds.innerText = `${second > 9 ? second : "0" + second}`;
-  
+  if (second > 0) {
+    second--;
+    seconds.innerText = second;
+  } else {
+    second = 59;
+    seconds.innerText = second;
+  }
+  seconds.innerText = `${second > 9 ? second : "0" + second}`;
 }
 
 function minuteTimer() {
@@ -120,11 +126,15 @@ function minuteTimer() {
   minutes.innerText = `${minute}`;
 }
 
-// setInterval(sec, 1000)
+
+
+
+
 
 function render() {
   renderGame();
-  renderTime()
+  // renderTime();
+  
 }
 
 function renderGame() {
@@ -168,7 +178,7 @@ function renderMessage(x) {
     secretletter.forEach((letter) => {
       letter.style.display = "";
     });
-    gameOver.play()
+    gameOver.play();
     document.querySelector(".message2").innerText = "Game Over";
     gameBtn.innerText = "Play Again";
     numberOfTries++;
@@ -184,7 +194,7 @@ function renderMessage(x) {
   console.log(status);
   console.log(foundLetters);
   if (!status.includes("none") === true) {
-    success.play()
+    success.play();
     document.querySelector(".message2").innerText = "Thank you for saving me";
     gameBtn.innerText = "Play Again";
     numberOfWins++;
@@ -210,7 +220,7 @@ document.addEventListener("keydown", (e) => {
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
-    correctLetter.play()
+    correctLetter.play();
 
     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
     if (!foundLetters.includes(playerGuess)) {
@@ -227,7 +237,7 @@ document.addEventListener("keydown", (e) => {
     }
   } else {
     console.log("wrong");
-    wrongLetter.play()
+    wrongLetter.play();
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
     }
