@@ -3,7 +3,34 @@
 // Time limit options= []
 // Number of players = []
 // WordChoices
-const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+const alphabets = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
 const wordChoices = [
   "bird",
   "cat",
@@ -44,7 +71,6 @@ let second;
 let minute;
 let numberOfWins;
 let numberOfTries;
-
 
 // Cached elements
 // Text input
@@ -89,7 +115,7 @@ function init() {
   remainingNumberofWrongGuesses = numberOfWrongGuesses;
   numberOfHints = 20;
   second = 0;
-  minute = 2;
+  minute = 1;
   numberOfWins = 0;
   numberOfTries = 1;
 
@@ -97,11 +123,9 @@ function init() {
 }
 
 let secondsInterval = null;
-let minutesInterval = null;
 
 function renderTime() {
   if (secondsInterval) clearInterval(secondsInterval);
-  if (minutesInterval) clearInterval(minutesInterval);
   secondsInterval = setInterval(secondTimer, 1000);
   // minutesInterval = setInterval(minuteTimer, 60000);
 }
@@ -109,17 +133,23 @@ function renderTime() {
 renderTime();
 
 function secondTimer() {
-  if (minute > 0) {
+  if(minute === 0 && second === 0){
+    renderMessage(remainingNumberofWrongGuesses);
+  }
+  if (minute >= 0) {
     if (second > 0) {
       second--;
       seconds.innerText = second;
     } else {
-      minute--
-      minutes.innerText = `${minute}`;
-      second = 59;
-      
+      if (minute > 0) {
+        minute--;
+        minutes.innerText = `${minute}`;
+        second = 59;
+      }
     }
   }
+
+  
   seconds.innerText = `${second > 9 ? second : "0" + second}`;
 }
 
@@ -146,16 +176,17 @@ function renderGame() {
   }
 
   alphabets.forEach((alphabet) => {
-    keyboardKey = document.createElement('div')
-    keyboardKey.style.cursor = 'pointer';
-    keyboardKey.style.border = '1px solid black';
-    keyboardKey.style.height = '25px'
-    keyboardKey.style.width = '25px'
-    keyboardKey.style.textAlign = 'center'
-    keyboardKey.innerText = alphabet
-    keyboard.append(keyboardKey)
-  })
-
+    keyboardKey = document.createElement("div");
+    keyboardKey.style.cursor = "pointer";
+    keyboardKey.style.border = "1px solid black";
+    keyboardKey.style.height = "55px";
+    keyboardKey.style.width = "55px";
+    keyboardKey.style.paddingVertical = "auto";
+    keyboardKey.style.borderRadius = "50%";
+    keyboardKey.style.textAlign = "center";
+    keyboardKey.innerText = alphabet;
+    keyboard.append(keyboardKey);
+  });
 
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
 
@@ -183,6 +214,8 @@ function renderGame() {
   });
 }
 
+
+
 function renderMessage(x) {
   const secretletter = document.querySelectorAll(".secret-letter");
   let status = [];
@@ -204,6 +237,7 @@ function renderMessage(x) {
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
     foundLetters = [];
+    minute = 1
     setTimeout(render, 2000);
     return;
   }
@@ -216,7 +250,8 @@ function renderMessage(x) {
     numberOfWins++;
     numberOfTries++;
     wordCount.innerText = `${numberOfWins}/${numberOfTries} words`;
-
+    minute = 1
+    second = 0
     secretWord = wordChoices[randomPicker()];
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
@@ -296,8 +331,6 @@ keyboard.addEventListener("click", (e) => {
   }
   renderMessage(remainingNumberofWrongGuesses);
 });
-
-
 
 //Reset the game
 gameBtn.addEventListener("click", init);
