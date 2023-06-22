@@ -2,34 +2,33 @@
 // Game types = []
 // Time limit options= []
 // Number of players = []
-// WordChoices
 const alphabets = [
-  "a",
-  "b",
-  "c",
-  "d",
+  "q",
+  "w",
   "e",
+  "r",
+  "t",
+  "y",
+  "u",
+  "i",
+  "o",
+  "p",
+  "a",
+  "s",
+  "d",
   "f",
   "g",
   "h",
-  "i",
   "j",
   "k",
   "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
   "z",
+  "x",
+  "c",
+  "v",
+  "b",
+  "n",
+  "m",
 ];
 const wordChoices = [
   "bird",
@@ -55,11 +54,9 @@ const wordChoices = [
 
 // State Variables
 // Game type =
-// time limit =
 // player = {}
 // Turn = 1
 // Winner = null
-//secretWord
 let secretWord;
 let letters;
 let playerGuess;
@@ -71,9 +68,11 @@ let second;
 let minute;
 let numberOfWins;
 let numberOfTries;
+let shipHeight;
+let personHeight;
+let personHover;
 
 // Cached elements
-// Text input
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
 const guesses = document.querySelector(".guesses");
@@ -85,15 +84,13 @@ const minutes = document.querySelector(".minutes");
 const seconds = document.querySelector(".seconds");
 const wordCount = document.querySelector(".word-count");
 const keyboard = document.querySelector(".keyboard");
+const ship = document.querySelector(".ship-img img");
+const person = document.querySelector(".person-img img");
 let correctLetter = new Audio("assets/audio/correct-choice-43861.mp3");
 let gameOver = new Audio("assets/audio/game-over-arcade-6435.mp3");
 let wrongLetter = new Audio("assets/audio/wrong-buzzer-6268.mp3");
 let success = new Audio("assets/audio/success-1-6297.mp3");
 
-// Get a hint button
-// Remaining hints
-// Words left
-// remain time display
 // Number of players display
 
 // functions
@@ -114,6 +111,9 @@ function init() {
   numberOfWrongGuesses = 8;
   remainingNumberofWrongGuesses = numberOfWrongGuesses;
   numberOfHints = 20;
+  shipHeight = 100;
+  personHeight = 10;
+  personHover = 0;
   second = 0;
   minute = 1;
   numberOfWins = 0;
@@ -124,6 +124,7 @@ function init() {
 
 let secondsInterval = null;
 
+//countdown timer
 function renderTime() {
   if (secondsInterval) clearInterval(secondsInterval);
   secondsInterval = setInterval(secondTimer, 1000);
@@ -133,9 +134,11 @@ function renderTime() {
 renderTime();
 
 function secondTimer() {
-  if(minute === 0 && second === 0){
+  //end game when countdown reaches 0
+  if (minute === 0 && second === 0) {
     renderMessage(remainingNumberofWrongGuesses);
   }
+  //countdown
   if (minute >= 0) {
     if (second > 0) {
       second--;
@@ -148,24 +151,14 @@ function secondTimer() {
       }
     }
   }
-
-  
   seconds.innerText = `${second > 9 ? second : "0" + second}`;
 }
 
-// function minuteTimer() {
-//   if (minute > 0) {
-//     minute--;
-//     minutes.innerText = minute;
-//   }
-//   minutes.innerText = `${minute}`;
-// }
-
 function render() {
   renderGame();
-  // renderTime();
 }
 
+//start a fresh game
 function renderGame() {
   while (word.hasChildNodes()) {
     word.removeChild(word.firstChild);
@@ -184,9 +177,16 @@ function renderGame() {
     keyboardKey.style.paddingVertical = "auto";
     keyboardKey.style.borderRadius = "50%";
     keyboardKey.style.textAlign = "center";
+    keyboardKey.style.justifySelf = "center";
     keyboardKey.innerText = alphabet;
     keyboard.append(keyboardKey);
   });
+
+  ship.style.height = `${shipHeight}px`;
+
+  person.style.height = `${personHeight}rem`;
+
+  person.style.bottom = `${personHover}px`;
 
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
 
@@ -214,8 +214,7 @@ function renderGame() {
   });
 }
 
-
-
+//check game status
 function renderMessage(x) {
   const secretletter = document.querySelectorAll(".secret-letter");
   let status = [];
@@ -237,7 +236,14 @@ function renderMessage(x) {
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
     foundLetters = [];
-    minute = 1
+    shipHeight = 100;
+    ship.style.height = `${shipHeight}px`;
+    personHeight = 10;
+    person.style.height = `${personHeight}rem`;
+    personHover = 0;
+    person.style.bottom = `${personHover}px`;
+    person.style.display = ""
+    minute = 1;
     setTimeout(render, 2000);
     return;
   }
@@ -250,8 +256,8 @@ function renderMessage(x) {
     numberOfWins++;
     numberOfTries++;
     wordCount.innerText = `${numberOfWins}/${numberOfTries} words`;
-    minute = 1
-    second = 0
+    minute = 1;
+    second = 0;
     secretWord = wordChoices[randomPicker()];
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
@@ -262,9 +268,8 @@ function renderMessage(x) {
 }
 
 // event listeners
-// text click
-// button click
-//listen for players keypress, If it is included use the index to display it on the page.
+
+// keyboard click
 document.addEventListener("keydown", (e) => {
   playerGuess = e.key;
   console.log(playerGuess);
@@ -288,6 +293,24 @@ document.addEventListener("keydown", (e) => {
     }
   } else {
     console.log("wrong");
+    if (shipHeight < 400) {
+      shipHeight += 100;
+      ship.style.height = `${shipHeight}px`;
+    }
+    if (shipHeight === 400) {
+      if (personHeight > 4) {
+        personHeight -= 2;
+        person.style.height = `${personHeight}rem`;
+      }
+      if (personHover < 250) {
+        personHover += 50;
+        person.style.bottom = `${personHover}px`;
+      }
+      if(personHover === 250){
+        person.style.display = "none"
+      }
+    }
+
     wrongLetter.play();
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
@@ -298,6 +321,7 @@ document.addEventListener("keydown", (e) => {
   renderMessage(remainingNumberofWrongGuesses);
 });
 
+// onscreen click
 keyboard.addEventListener("click", (e) => {
   playerGuess = e.target.innerText;
 
@@ -322,6 +346,25 @@ keyboard.addEventListener("click", (e) => {
     }
   } else {
     console.log("wrong");
+    if (shipHeight < 400) {
+      shipHeight += 100;
+      ship.style.height = `${shipHeight}px`;
+    }
+
+    if (shipHeight === 400) {
+      if (personHeight > 4) {
+        personHeight -= 2;
+        person.style.height = `${personHeight}rem`;
+      }
+      if (personHover < 250) {
+        personHover += 50;
+        person.style.bottom = `${personHover}px`;
+      }
+      if(personHover === 250){
+        person.style.display = "none"
+      }
+    }
+
     wrongLetter.play();
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
@@ -345,6 +388,5 @@ hintBtn.addEventListener("click", () => {
     });
     numberOfHints--;
   }
-
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
 });
