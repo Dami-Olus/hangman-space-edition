@@ -196,7 +196,7 @@ function renderGame() {
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
 
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
-  document.querySelector(".message2").innerText = "Please Save Me!";
+  // document.querySelector(".message2").innerText = "Please Save Me!";
 
   numberOfTries > 1
     ? (wordCount.innerText = `${numberOfWins}/${numberOfTries} words`)
@@ -256,7 +256,7 @@ function renderMessage(x) {
   console.log(foundLetters);
   if (!status.includes("none") === true) {
     success.play();
-    document.querySelector(".message2").innerText = "Thank you for saving me";
+    // document.querySelector(".message2").innerText = "Thank you for saving me";
     gameBtn.innerText = "Play Again";
     numberOfWins++;
     numberOfTries++;
@@ -267,6 +267,9 @@ function renderMessage(x) {
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
     foundLetters = [];
+    personHeight = 10
+    personHover = 0
+    shipHeight = 100
     setTimeout(render, 2000);
     return;
   }
