@@ -172,12 +172,12 @@ function renderGame() {
     keyboardKey = document.createElement("div");
     keyboardKey.style.cursor = "pointer";
     keyboardKey.style.border = "1px solid black";
-    keyboardKey.style.height = "55px";
-    keyboardKey.style.width = "55px";
+    keyboardKey.style.height = "35px";
+    keyboardKey.style.width = "35px";
     keyboardKey.style.paddingVertical = "auto";
     keyboardKey.style.borderRadius = "50%";
     keyboardKey.style.textAlign = "center";
-    keyboardKey.style.justifySelf = "center";
+    // keyboardKey.style.justifySelf = "center";
     keyboardKey.innerText = alphabet;
     keyboardKey.style.display ='flex'
     keyboardKey.style.alignItems = 'center'
@@ -315,8 +315,10 @@ document.addEventListener("keydown", (e) => {
         person.style.display = "none"
       }
     }
-
-    wrongLetter.play();
+if(remainingNumberofWrongGuesses>=2){
+  wrongLetter.play();
+}
+    
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
     }
@@ -370,7 +372,9 @@ keyboard.addEventListener("click", (e) => {
       }
     }
 
-    wrongLetter.play();
+    if(remainingNumberofWrongGuesses>=2){
+      wrongLetter.play();
+    }
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
     }

@@ -56,6 +56,8 @@ header {
 
 .hintBtn {
   width: 55px;
+  border-radius: 20px;
+  border: none;
 }
 
 .secret-word {
@@ -67,8 +69,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   background-color: aqua;
   margin-right: 15px;
   font-size: 65px;
@@ -81,7 +83,7 @@ header {
 
 .keyboard {
   display: grid;
-  width: 700px;
+  width: 400px;
   grid-template-columns: repeat(10, 1fr);
   margin-top: 50px;
   
