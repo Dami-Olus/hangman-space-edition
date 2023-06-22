@@ -179,6 +179,11 @@ function renderGame() {
     keyboardKey.style.textAlign = "center";
     keyboardKey.style.justifySelf = "center";
     keyboardKey.innerText = alphabet;
+    keyboardKey.style.display ='flex'
+    keyboardKey.style.alignItems = 'center'
+    keyboardKey.style.justifyContent = 'center'
+    keyboardKey.style.background = 'beige'
+    keyboardKey.style.marginBottom = '10px'
     keyboard.append(keyboardKey);
   });
 

@@ -82,7 +82,8 @@ header {
 .keyboard {
   display: grid;
   width: 700px;
-  grid-template-columns: repeat(6, 1fr);
-  background-color: beige;
+  grid-template-columns: repeat(10, 1fr);
+  margin-top: 50px;
+  
 }
 
