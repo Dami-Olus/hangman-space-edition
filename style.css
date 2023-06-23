@@ -52,6 +52,17 @@ header {
   height: 5rem;
   width: 5rem;
 }
+
+.game-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  align-content: center;
+}
+
+.game-options p{
+  font-weight: bolder;
+}
 .modal {
   display: flex;
   flex-direction: column;
@@ -64,18 +75,14 @@ header {
   position: absolute;
   z-index: 20;
 }
-.modal button {
+.game-option3 {
   cursor: pointer;
-  height: 30px;
-  width: 50px;
-  border: none;
   border-radius: 5px;
   box-shadow: 10px 5px 10px;
-  font-weight: bolder;
   transition: 0.5s;
 }
 
-.modal button:hover{
+.game-option3:hover{
   transform: scale(150%);
 }
 .hintBtn {

@@ -77,7 +77,7 @@ let keyboardKey;
 const endGameBtn = document.querySelector(".end-game button");
 const gameScreen = document.querySelector(".game-screen");
 const modal = document.querySelector(".modal");
-const playBtn = document.querySelector(".modal button");
+const playBtn = document.querySelector(".game-option3");
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
 const guesses = document.querySelector(".guesses");
@@ -288,65 +288,65 @@ playBtn.addEventListener("click", function (e) {
 endGameBtn.addEventListener("click", function (e) {
   modal.style.display = "flex";
   gameScreen.style.display = "none";
-  init();
+  clearInterval(secondsInterval)
 });
 
 // keyboard click
-document.addEventListener("keydown", (e) => {
-  playerGuess = e.key;
-  console.log(playerGuess);
-  // check if the letter is included in the letters list.
-  if (letters.includes(playerGuess)) {
-    console.log("correct");
-    if (keyboardKey.innerText === playerGuess) {
-      keyboardKey.style.background = "green";
-    }
-    correctLetter.play();
+// document.addEventListener("keydown", (e) => {
+//   playerGuess = e.key;
+//   console.log(playerGuess);
+//   // check if the letter is included in the letters list.
+//   if (letters.includes(playerGuess)) {
+//     console.log("correct");
+//     if (keyboardKey.innerText === playerGuess) {
+//       keyboardKey.style.background = "green";
+//     }
+//     correctLetter.play();
 
-    // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
-    if (!foundLetters.includes(playerGuess)) {
-      document.querySelector(".message").innerText =
-        "Correct, make another guess";
-      foundLetters.push(playerGuess);
-      console.log(foundLetters);
+//     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
+//     if (!foundLetters.includes(playerGuess)) {
+//       document.querySelector(".message").innerText =
+//         "Correct, make another guess";
+//       foundLetters.push(playerGuess);
+//       console.log(foundLetters);
 
-      letters.map((item, idx) => {
-        if (playerGuess === item) {
-          document.getElementById(idx).style.display = "";
-        }
-      });
-    }
-  } else {
-    console.log("wrong");
-    if (shipHeight < 400) {
-      shipHeight += 100;
-      ship.style.height = `${shipHeight}px`;
-    }
-    if (shipHeight === 400) {
-      if (personHeight > 4) {
-        personHeight -= 2;
-        person.style.height = `${personHeight}rem`;
-      }
-      if (personHover < 250) {
-        personHover += 50;
-        person.style.bottom = `${personHover}px`;
-      }
-      if (personHover === 250) {
-        person.style.display = "none";
-      }
-    }
-    if (remainingNumberofWrongGuesses >= 2) {
-      wrongLetter.play();
-    }
+//       letters.map((item, idx) => {
+//         if (playerGuess === item) {
+//           document.getElementById(idx).style.display = "";
+//         }
+//       });
+//     }
+//   } else {
+//     console.log("wrong");
+//     if (shipHeight < 400) {
+//       shipHeight += 100;
+//       ship.style.height = `${shipHeight}px`;
+//     }
+//     if (shipHeight === 400) {
+//       if (personHeight > 4) {
+//         personHeight -= 2;
+//         person.style.height = `${personHeight}rem`;
+//       }
+//       if (personHover < 250) {
+//         personHover += 50;
+//         person.style.bottom = `${personHover}px`;
+//       }
+//       if (personHover === 250) {
+//         person.style.display = "none";
+//       }
+//     }
+//     if (remainingNumberofWrongGuesses >= 2) {
+//       wrongLetter.play();
+//     }
 
-    if (remainingNumberofWrongGuesses > 0) {
-      remainingNumberofWrongGuesses--;
-    }
-    guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
-    document.querySelector(".message").innerText = "Wrong try again";
-  }
-  renderMessage(remainingNumberofWrongGuesses);
-});
+//     if (remainingNumberofWrongGuesses > 0) {
+//       remainingNumberofWrongGuesses--;
+//     }
+//     guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
+//     document.querySelector(".message").innerText = "Wrong try again";
+//   }
+//   renderMessage(remainingNumberofWrongGuesses);
+// });
 
 // onscreen click
 keyboard.addEventListener("click", (e) => {
