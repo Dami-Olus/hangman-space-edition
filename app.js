@@ -339,6 +339,7 @@ keyboard.addEventListener("click", (e) => {
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
+    e.target.style.background = 'green'
     correctLetter.play();
 
     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
@@ -356,6 +357,7 @@ keyboard.addEventListener("click", (e) => {
     }
   } else {
     console.log("wrong");
+    e.target.style.background = 'orange'
     if (shipHeight < 400) {
       shipHeight += 100;
       ship.style.height = `${shipHeight}px`;
