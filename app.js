@@ -74,6 +74,9 @@ let personHover;
 let keyboardKey
 
 // Cached elements
+const gameScreen = document.querySelector('.game-screen');
+const modal = document.querySelector('.modal');
+const playBtn = document.querySelector('.modal button')
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
 const guesses = document.querySelector(".guesses");
@@ -278,6 +281,13 @@ function renderMessage(x) {
 }
 
 // event listeners
+
+playBtn.addEventListener("click", function(e){
+  modal.style.display = "none"
+  gameScreen.style.display = "flex"
+}
+  
+ )
 
 // keyboard click
 document.addEventListener("keydown", (e) => {

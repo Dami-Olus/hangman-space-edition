@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 body {
   background-color: rgb(84, 158, 183);
 }
@@ -6,17 +11,14 @@ header {
   text-align: center;
 }
 
-
-
-.game-screen{
-  display: flex;
+.game-screen {
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
 
 .game-play {
-  
 }
 
 .score-info {
@@ -28,32 +30,54 @@ header {
   min-height: 400px;
 }
 
-
 .hint {
   display: flex;
   flex-direction: column;
 }
 
-
-
 .person-img img {
   /* position: relative; */
-  height: 10rem; 
-  position: absolute; 
-  bottom: 0px; 
-  left: 8rem
+  height: 10rem;
+  position: absolute;
+  bottom: 0px;
+  left: 8rem;
 }
 
-.space-gun img{
+.space-gun img {
   position: absolute;
   top: 270px;
   right: 150px;
   transform: rotate(45deg);
   z-index: 10;
-  height: 5rem; 
+  height: 5rem;
   width: 5rem;
 }
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: 20;
+}
+.modal button {
+  cursor: pointer;
+  height: 30px;
+  width: 50px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 10px 5px 10px;
+  font-weight: bolder;
+  transition: 0.5s;
+}
 
+.modal button:hover{
+  transform: scale(150%);
+}
 .hintBtn {
   width: 55px;
   border-radius: 20px;
@@ -86,6 +110,4 @@ header {
   width: 400px;
   grid-template-columns: repeat(10, 1fr);
   margin-top: 50px;
-  
 }
-
