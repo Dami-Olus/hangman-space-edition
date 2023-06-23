@@ -1,4 +1,4 @@
-// constants
+// CONSTANTS
 // Game types = []
 // Time limit options= []
 // Number of players = []
@@ -52,7 +52,7 @@ const wordChoices = [
   "nasa",
 ];
 
-// State Variables
+// STATE VARIABLES
 // Game type =
 // player = {}
 // Turn = 1
@@ -72,37 +72,57 @@ let shipHeight;
 let personHeight;
 let personHover;
 let keyboardKey;
+let secondsInterval = null;
 
-// Cached elements
+// CACHED ELEMENTS
+//Buttons
 const endGameBtn = document.querySelector(".end-game button");
+const playBtn = document.querySelector(".game-option3");
+const gameBtn = document.querySelector(".game-button");
+const hintBtn = document.querySelector(".hintBtn");
+
+//Game
 const gameScreen = document.querySelector(".game-screen");
 const modal = document.querySelector(".modal");
-const playBtn = document.querySelector(".game-option3");
-const word = document.querySelector(".secret-word");
-const gameBtn = document.querySelector(".game-button");
+
+//Stats
 const guesses = document.querySelector(".guesses");
-const hiddenLetter = document.querySelectorAll(".secret-letter");
+const wordCount = document.querySelector(".word-count");
 const hints = document.querySelector(".hintCounter");
-const hintBtn = document.querySelector(".hintBtn");
 const timeLimit = document.querySelector(".time-limit");
 const minutes = document.querySelector(".minutes");
 const seconds = document.querySelector(".seconds");
-const wordCount = document.querySelector(".word-count");
+
+//Game elements
+const word = document.querySelector(".secret-word");
+const hiddenLetter = document.querySelectorAll(".secret-letter");
 const keyboard = document.querySelector(".keyboard");
 const ship = document.querySelector(".ship-img img");
 const person = document.querySelector(".person-img img");
-let correctLetter = new Audio("assets/audio/correct-choice-43861.mp3");
-let gameOver = new Audio("assets/audio/game-over-arcade-6435.mp3");
-let wrongLetter = new Audio("assets/audio/wrong-buzzer-6268.mp3");
-let success = new Audio("assets/audio/success-1-6297.mp3");
 
-// Number of players display
+//Sound Effects
+const correctLetter = new Audio("assets/audio/correct-choice-43861.mp3");
+const wrongLetter = new Audio("assets/audio/wrong-buzzer-6268.mp3");
+const gameOver = new Audio("assets/audio/game-over-arcade-6435.mp3");
+const success = new Audio("assets/audio/success-1-6297.mp3");
 
-// functions
-
+// FUNCTIONS
 //pick a random index
 function randomPicker() {
   return Math.floor(Math.random() * wordChoices.length);
+}
+
+//render hidden word
+function renderHiddenWord(x, index) {
+  const letterContainer = document.createElement("div");
+  const letterContainerp = document.createElement("p");
+  letterContainerp.classList.add("secret-letter");
+  letterContainerp.innerText = x;
+  letterContainerp.id = index;
+  letterContainerp.style.display = "none";
+  letterContainer.classList.add("secret-letters");
+  letterContainer.append(letterContainerp);
+  word.append(letterContainer);
 }
 
 //start game
@@ -110,7 +130,7 @@ function init() {
   secretWord = wordChoices[randomPicker()];
   letters = secretWord.split("");
   foundLetters = [];
-  numberOfWrongGuesses = 8;
+  numberOfWrongGuesses = 7;
   remainingNumberofWrongGuesses = numberOfWrongGuesses;
   numberOfHints = 20;
   shipHeight = 100;
@@ -124,8 +144,6 @@ function init() {
   render();
 }
 
-let secondsInterval = null;
-
 //countdown timer
 function renderTime() {
   if (secondsInterval) clearInterval(secondsInterval);
@@ -133,6 +151,7 @@ function renderTime() {
   // minutesInterval = setInterval(minuteTimer, 60000);
 }
 
+//Countdown timer logic
 function secondTimer() {
   //end game when countdown reaches 0
   if (minute === 0 && second === 0) {
@@ -158,75 +177,65 @@ function render() {
   renderGame();
 }
 
+//Create onscreen keyboard
+function createKeyboard(alphabet) {
+  keyboardKey = document.createElement("div");
+  keyboardKey.style.cursor = "pointer";
+  keyboardKey.style.border = "1px solid black";
+  keyboardKey.style.height = "35px";
+  keyboardKey.style.width = "35px";
+  keyboardKey.style.paddingVertical = "auto";
+  keyboardKey.style.borderRadius = "50%";
+  keyboardKey.style.textAlign = "center";
+  // keyboardKey.style.justifySelf = "center";
+  keyboardKey.innerText = alphabet;
+  keyboardKey.style.display = "flex";
+  keyboardKey.style.alignItems = "center";
+  keyboardKey.style.justifyContent = "center";
+  keyboardKey.style.background = "beige";
+  keyboardKey.style.marginBottom = "10px";
+  keyboard.append(keyboardKey);
+}
+
 //start a fresh game
 function renderGame() {
+  //clear hidden word if any exists
   while (word.hasChildNodes()) {
     word.removeChild(word.firstChild);
   }
 
+  //clear keyboard if any exists
   while (keyboard.hasChildNodes()) {
     keyboard.removeChild(keyboard.firstChild);
   }
 
-  alphabets.forEach((alphabet) => {
-    keyboardKey = document.createElement("div");
-    keyboardKey.style.cursor = "pointer";
-    keyboardKey.style.border = "1px solid black";
-    keyboardKey.style.height = "35px";
-    keyboardKey.style.width = "35px";
-    keyboardKey.style.paddingVertical = "auto";
-    keyboardKey.style.borderRadius = "50%";
-    keyboardKey.style.textAlign = "center";
-    // keyboardKey.style.justifySelf = "center";
-    keyboardKey.innerText = alphabet;
-    keyboardKey.style.display = "flex";
-    keyboardKey.style.alignItems = "center";
-    keyboardKey.style.justifyContent = "center";
-    keyboardKey.style.background = "beige";
-    keyboardKey.style.marginBottom = "10px";
-    keyboard.append(keyboardKey);
-  });
+  //render keyboard
+  alphabets.forEach(createKeyboard);
 
+  //render state
   ship.style.height = `${shipHeight}px`;
-
   person.style.height = `${personHeight}rem`;
-
   person.style.bottom = `${personHover}px`;
-
   guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
-
   hints.innerText = `Remaining number of hints: ${numberOfHints}`;
-  // document.querySelector(".message2").innerText = "Please Save Me!";
-
   numberOfTries > 1
     ? (wordCount.innerText = `${numberOfWins}/${numberOfTries} words`)
     : (wordCount.innerText = `${numberOfWins}/${numberOfTries} word`);
-
   minutes.innerText = `${minute}`;
   seconds.innerText = `${second > 9 ? second : "0" + second}`;
 
   //render hidden word
-  letters.forEach((x, index) => {
-    const letterContainer = document.createElement("div");
-    const letterContainerp = document.createElement("p");
-    letterContainerp.classList.add("secret-letter");
-    letterContainerp.innerText = x;
-    letterContainerp.id = index;
-    letterContainerp.style.display = "none";
-    letterContainer.classList.add("secret-letters");
-    letterContainer.append(letterContainerp);
-    word.append(letterContainer);
-  });
+  letters.forEach(renderHiddenWord);
 }
 
-//check game status
-function renderMessage(x) {
+//check winner
+function checkWinner(x) {
   const secretletter = document.querySelectorAll(".secret-letter");
   let status = [];
   secretletter.forEach((letter) => {
     status.push(letter.style.display);
   });
-  console.log(x);
+
   if (x === 0 || (minute === 0 && second === 0)) {
     secretletter.forEach((letter) => {
       letter.style.display = "";
@@ -240,6 +249,7 @@ function renderMessage(x) {
     secretWord = wordChoices[randomPicker()];
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
+    document.querySelector(".message2").innerText = "";
     foundLetters = [];
     shipHeight = 100;
     ship.style.height = `${shipHeight}px`;
@@ -252,11 +262,9 @@ function renderMessage(x) {
     setTimeout(render, 2000);
     return;
   }
-  console.log(status);
-  console.log(foundLetters);
+
   if (!status.includes("none") === true) {
     success.play();
-    // document.querySelector(".message2").innerText = "Thank you for saving me";
     gameBtn.innerText = "Play Again";
     numberOfWins++;
     numberOfTries++;
@@ -275,8 +283,7 @@ function renderMessage(x) {
   }
 }
 
-// event listeners
-
+// EVENT LISTENERS
 //Start Game
 playBtn.addEventListener("click", function (e) {
   modal.style.display = "none";
@@ -288,7 +295,7 @@ playBtn.addEventListener("click", function (e) {
 endGameBtn.addEventListener("click", function (e) {
   modal.style.display = "flex";
   gameScreen.style.display = "none";
-  clearInterval(secondsInterval)
+  clearInterval(secondsInterval);
 });
 
 // keyboard click
@@ -351,22 +358,25 @@ endGameBtn.addEventListener("click", function (e) {
 // onscreen click
 keyboard.addEventListener("click", (e) => {
   playerGuess = e.target.innerText;
-
-  console.log(playerGuess);
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
-    console.log("correct");
     e.target.style.background = "green";
-
     correctLetter.play();
 
-    // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
+    // Push the letter into a new array so we can keep track of the letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
     if (!foundLetters.includes(playerGuess)) {
       document.querySelector(".message").innerText =
         "Correct, make another guess";
-      foundLetters.push(playerGuess);
-      console.log(foundLetters);
 
+      setTimeout(
+        (document.querySelector(".message").innerText =
+          "Correct, make another guess"),
+        2000
+      );
+
+      foundLetters.push(playerGuess);
+
+      //if letter is correct set it to display
       letters.map((item, idx) => {
         if (playerGuess === item) {
           document.getElementById(idx).style.display = "";
@@ -374,13 +384,14 @@ keyboard.addEventListener("click", (e) => {
       });
     }
   } else {
-    console.log("wrong");
     e.target.style.background = "orange";
+    //Alien ship arrives
     if (shipHeight < 400) {
       shipHeight += 100;
       ship.style.height = `${shipHeight}px`;
     }
 
+    //Person is beamed up
     if (shipHeight === 400) {
       if (personHeight > 4) {
         personHeight -= 2;
@@ -403,8 +414,12 @@ keyboard.addEventListener("click", (e) => {
     }
     guesses.innerHTML = `<p><span>${remainingNumberofWrongGuesses}</span>/<span>${numberOfWrongGuesses}</span> guesses remaining</p>`;
     document.querySelector(".message").innerText = "Wrong try again";
+    setTimeout(
+      (document.querySelector(".message").innerText = "Wrong try again"),
+      2000
+    );
   }
-  renderMessage(remainingNumberofWrongGuesses);
+  checkWinner(remainingNumberofWrongGuesses);
 });
 
 //Reset the game
