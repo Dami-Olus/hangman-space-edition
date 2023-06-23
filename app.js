@@ -31,25 +31,25 @@ const alphabets = [
   "m",
 ];
 const wordChoices = [
-  "bird",
-  "cat",
-  "mouse",
-  "donkey",
-  "monkey",
-  "eagle",
-  "sheep",
-  "crocodile",
-  "elephant",
-  "giraffe",
-  "rat",
-  "duck",
-  "lion",
-  "tiger",
-  "leopard",
-  "fish",
-  "dolphin",
-  "shark",
-  "whale",
+  "mecury",
+  "venus",
+  "earth",
+  "mars",
+  "jupiter",
+  "saturn",
+  "uranus",
+  "neptune",
+  "pluto",
+  "sun",
+  "asteroid",
+  "comet",
+  "galaxy",
+  "star",
+  "rocket",
+  "telescope",
+  "astronaut",
+  "astronomer",
+  "nasa",
 ];
 
 // State Variables
@@ -71,12 +71,13 @@ let numberOfTries;
 let shipHeight;
 let personHeight;
 let personHover;
-let keyboardKey
+let keyboardKey;
 
 // Cached elements
-const gameScreen = document.querySelector('.game-screen');
-const modal = document.querySelector('.modal');
-const playBtn = document.querySelector('.modal button')
+const endGameBtn = document.querySelector(".end-game button");
+const gameScreen = document.querySelector(".game-screen");
+const modal = document.querySelector(".modal");
+const playBtn = document.querySelector(".modal button");
 const word = document.querySelector(".secret-word");
 const gameBtn = document.querySelector(".game-button");
 const guesses = document.querySelector(".guesses");
@@ -98,16 +99,13 @@ let success = new Audio("assets/audio/success-1-6297.mp3");
 // Number of players display
 
 // functions
+
+//pick a random index
 function randomPicker() {
   return Math.floor(Math.random() * wordChoices.length);
 }
 
-// <div class="secret-letter">
-//           <p id="l0">d</p>
-//         </div>
-
-init();
-
+//start game
 function init() {
   secretWord = wordChoices[randomPicker()];
   letters = secretWord.split("");
@@ -122,7 +120,7 @@ function init() {
   minute = 1;
   numberOfWins = 0;
   numberOfTries = 1;
-
+  renderTime();
   render();
 }
 
@@ -134,8 +132,6 @@ function renderTime() {
   secondsInterval = setInterval(secondTimer, 1000);
   // minutesInterval = setInterval(minuteTimer, 60000);
 }
-
-renderTime();
 
 function secondTimer() {
   //end game when countdown reaches 0
@@ -183,13 +179,12 @@ function renderGame() {
     keyboardKey.style.textAlign = "center";
     // keyboardKey.style.justifySelf = "center";
     keyboardKey.innerText = alphabet;
-    keyboardKey.style.display ='flex'
-    keyboardKey.style.alignItems = 'center'
-    keyboardKey.style.justifyContent = 'center'
-    keyboardKey.style.background = 'beige'
-    keyboardKey.style.marginBottom = '10px'
+    keyboardKey.style.display = "flex";
+    keyboardKey.style.alignItems = "center";
+    keyboardKey.style.justifyContent = "center";
+    keyboardKey.style.background = "beige";
+    keyboardKey.style.marginBottom = "10px";
     keyboard.append(keyboardKey);
-    
   });
 
   ship.style.height = `${shipHeight}px`;
@@ -252,7 +247,7 @@ function renderMessage(x) {
     person.style.height = `${personHeight}rem`;
     personHover = 0;
     person.style.bottom = `${personHover}px`;
-    person.style.display = ""
+    person.style.display = "";
     minute = 1;
     setTimeout(render, 2000);
     return;
@@ -272,9 +267,9 @@ function renderMessage(x) {
     letters = secretWord.split("");
     remainingNumberofWrongGuesses = numberOfWrongGuesses;
     foundLetters = [];
-    personHeight = 10
-    personHover = 0
-    shipHeight = 100
+    personHeight = 10;
+    personHover = 0;
+    shipHeight = 100;
     setTimeout(render, 2000);
     return;
   }
@@ -282,12 +277,19 @@ function renderMessage(x) {
 
 // event listeners
 
-playBtn.addEventListener("click", function(e){
-  modal.style.display = "none"
-  gameScreen.style.display = "flex"
-}
-  
- )
+//Start Game
+playBtn.addEventListener("click", function (e) {
+  modal.style.display = "none";
+  gameScreen.style.display = "flex";
+  init();
+});
+
+//End Game
+endGameBtn.addEventListener("click", function (e) {
+  modal.style.display = "flex";
+  gameScreen.style.display = "none";
+  init();
+});
 
 // keyboard click
 document.addEventListener("keydown", (e) => {
@@ -296,8 +298,8 @@ document.addEventListener("keydown", (e) => {
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
-    if(keyboardKey.innerText === playerGuess){
-      keyboardKey.style.background = "green"
+    if (keyboardKey.innerText === playerGuess) {
+      keyboardKey.style.background = "green";
     }
     correctLetter.play();
 
@@ -329,14 +331,14 @@ document.addEventListener("keydown", (e) => {
         personHover += 50;
         person.style.bottom = `${personHover}px`;
       }
-      if(personHover === 250){
-        person.style.display = "none"
+      if (personHover === 250) {
+        person.style.display = "none";
       }
     }
-if(remainingNumberofWrongGuesses>=2){
-  wrongLetter.play();
-}
-    
+    if (remainingNumberofWrongGuesses >= 2) {
+      wrongLetter.play();
+    }
+
     if (remainingNumberofWrongGuesses > 0) {
       remainingNumberofWrongGuesses--;
     }
@@ -348,15 +350,14 @@ if(remainingNumberofWrongGuesses>=2){
 
 // onscreen click
 keyboard.addEventListener("click", (e) => {
-  
   playerGuess = e.target.innerText;
 
   console.log(playerGuess);
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
-    e.target.style.background = 'green'
-    
+    e.target.style.background = "green";
+
     correctLetter.play();
 
     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
@@ -371,12 +372,10 @@ keyboard.addEventListener("click", (e) => {
           document.getElementById(idx).style.display = "";
         }
       });
-      
-      
     }
   } else {
     console.log("wrong");
-    e.target.style.background = 'orange'
+    e.target.style.background = "orange";
     if (shipHeight < 400) {
       shipHeight += 100;
       ship.style.height = `${shipHeight}px`;
@@ -391,12 +390,12 @@ keyboard.addEventListener("click", (e) => {
         personHover += 50;
         person.style.bottom = `${personHover}px`;
       }
-      if(personHover === 250){
-        person.style.display = "none"
+      if (personHover === 250) {
+        person.style.display = "none";
       }
     }
 
-    if(remainingNumberofWrongGuesses>=2){
+    if (remainingNumberofWrongGuesses >= 2) {
       wrongLetter.play();
     }
     if (remainingNumberofWrongGuesses > 0) {
