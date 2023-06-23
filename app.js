@@ -71,6 +71,7 @@ let numberOfTries;
 let shipHeight;
 let personHeight;
 let personHover;
+let keyboardKey
 
 // Cached elements
 const word = document.querySelector(".secret-word");
@@ -185,6 +186,7 @@ function renderGame() {
     keyboardKey.style.background = 'beige'
     keyboardKey.style.marginBottom = '10px'
     keyboard.append(keyboardKey);
+    
   });
 
   ship.style.height = `${shipHeight}px`;
@@ -284,6 +286,9 @@ document.addEventListener("keydown", (e) => {
   // check if the letter is included in the letters list.
   if (letters.includes(playerGuess)) {
     console.log("correct");
+    if(keyboardKey.innerText === playerGuess){
+      keyboardKey.style.background = "green"
+    }
     correctLetter.play();
 
     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
@@ -333,6 +338,7 @@ if(remainingNumberofWrongGuesses>=2){
 
 // onscreen click
 keyboard.addEventListener("click", (e) => {
+  
   playerGuess = e.target.innerText;
 
   console.log(playerGuess);
@@ -340,6 +346,7 @@ keyboard.addEventListener("click", (e) => {
   if (letters.includes(playerGuess)) {
     console.log("correct");
     e.target.style.background = 'green'
+    
     correctLetter.play();
 
     // Push the letter into a new array so we can keep track of th letters we have guessed correctly.If pleayer chooses a letter that has previousy been selected, do nothing.
@@ -354,6 +361,8 @@ keyboard.addEventListener("click", (e) => {
           document.getElementById(idx).style.display = "";
         }
       });
+      
+      
     }
   } else {
     console.log("wrong");
